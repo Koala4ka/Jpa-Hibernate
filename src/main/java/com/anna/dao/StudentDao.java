@@ -15,5 +15,4 @@ public interface StudentDao {
 
     Student getStudentById(int id);
 
-
 }

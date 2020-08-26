@@ -1,5 +1,6 @@
 package com.anna.view.menu;
 
+import com.anna.entity.Book;
 import com.anna.entity.Student;
 import com.anna.service.StudentService;
 import com.anna.view.Menu;
@@ -39,7 +40,7 @@ public class MainMenu implements Menu {
             case "4" -> updateStudent();
             case "5" -> deleteStudent();
             case "6" -> addBook();
-            case "7" -> showBooks();
+            case "7" -> showStudentBooks();
             default -> incorrectInput();
         }
     }
@@ -49,14 +50,39 @@ public class MainMenu implements Menu {
         System.exit(0);
     }
 
-    private void showBooks() {
+    private void showStudentBooks() {
+        System.out.println("Enter student id to check all books:");
+        int studentId = SCANNER.nextInt();
+        Student student = studentService.getStudentById(studentId);
+        if (student == null) {
+            System.out.println("Student not found");
+        } else {
+            System.out.println("You've chosen " + student);
+            studentService.showAllStudentBooks(studentId).forEach(System.out::println);
+        }
+        show();
     }
 
     private void addBook() {
+        System.out.println("Enter student id who you want to add a book:");
+        int studentId = SCANNER.nextInt();
+        Student student = studentService.getStudentById(studentId);
+        if (student == null) {
+            System.out.println("Student not found");
+        } else {
+            System.out.println("You've chosen " + student);
+            System.out.println("Enter book name:");
+            String bookName = SCANNER.next();
+            System.out.println("Enter book author:");
+            String author = SCANNER.next();
+            studentService.addBook(studentId, new Book(bookName, author));
+            System.out.println("Book successfully added to student " + student.getFirstName());
+        }
+        show();
     }
 
     private void deleteStudent() {
-        System.out.print("Enter user ID: ");
+        System.out.print("Enter student ID: ");
         Student student = studentService.getStudentById(SCANNER.nextInt());
         if (student != null) {
             studentService.deleteStudent(student);
@@ -68,7 +94,23 @@ public class MainMenu implements Menu {
     }
 
     private void updateStudent() {
-
+        System.out.print("Enter student id to change it: ");
+        Student student = studentService.getStudentById(SCANNER.nextInt());
+        if (student != null) {
+            System.out.println("You will update this student:" + student);
+            System.out.print("Enter new  first name: ");
+            String studentName = SCANNER.next();
+            student.setFirstName(studentName);
+            System.out.print("Enter new second name: ");
+            student.setLastName(SCANNER.next());
+            System.out.print("Enter new email: ");
+            student.setEmail(SCANNER.next());
+            studentService.updateStudent(student);
+            System.out.println("Student " + student.getFirstName() + " updated");
+        } else {
+            System.out.println("Student not found");
+        }
+        show();
     }
 
     private void addStudent() {
@@ -79,16 +121,16 @@ public class MainMenu implements Menu {
         System.out.println("Enter last email:");
         String email = SCANNER.next();
         studentService.addStudent(new Student(firstName, lastName, email));
-        System.out.println("User successfully created");
+        System.out.println("Student successfully created");
         show();
     }
 
     private void findStudent() {
-        System.out.println("Enter user id:");
+        System.out.println("Enter student id:");
         int id = SCANNER.nextInt();
         Student student = studentService.getStudentById(id);
         if (student == null) {
-            System.out.println("User not found");
+            System.out.println("Student not found");
         } else {
             System.out.println("You've chosen " + student);
         }

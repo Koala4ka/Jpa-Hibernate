@@ -47,6 +47,7 @@ public class StudentDaoImpl implements StudentDao {
         return getCurrentSession().get(Student.class, id);
     }
 
+
     private Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
