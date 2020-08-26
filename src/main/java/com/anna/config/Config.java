@@ -23,7 +23,7 @@ public class Config {
     @Value("${db.driverClassName}")
     private String driverClassName;
 
-    @Value("${db.username}")
+    @Value("${db.userName}")
     private String username;
 
     @Value("${db.password}")
@@ -64,8 +64,7 @@ public class Config {
         var hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
-        hibernateProperties.setProperty( "hibernate.dialect", "  org.hibernate.dialect.PostgreSQLDialect");
-
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         return hibernateProperties;
     }
 
